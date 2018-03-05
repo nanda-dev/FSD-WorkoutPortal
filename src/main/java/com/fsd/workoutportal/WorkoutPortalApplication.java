@@ -1,0 +1,12 @@
+package com.fsd.workoutportal;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class WorkoutPortalApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(WorkoutPortalApplication.class, args);
+	}
+}
