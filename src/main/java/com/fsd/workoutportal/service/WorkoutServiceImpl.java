@@ -1,5 +1,7 @@
 package com.fsd.workoutportal.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,11 @@ public class WorkoutServiceImpl implements WorkoutService {
 	@Override
 	public void addWorkout(Workout workout) {
 		workoutDao.save(workout);
+	}
+
+	@Override
+	public List<Workout> getWorkoutsOfUser(Long userId) {
+		return workoutDao.findByUserId(userId);
 	}
 
 }

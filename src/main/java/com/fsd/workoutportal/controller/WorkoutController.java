@@ -1,5 +1,8 @@
 package com.fsd.workoutportal.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +41,19 @@ public class WorkoutController {
 	}
 	
 	@GetMapping("/{userId}")
-	public ApiResponse getWorkoutsOfUser(@PathVariable Long userId) {
-		return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
+	public List<Workout> getWorkoutsOfUser(@PathVariable Long userId) {
+		logger.info("Get Workouts of User: {}", userId);
+		List<Workout> workouts = new ArrayList<>();
+		try {
+			
+			workouts = workoutService.getWorkoutsOfUser(userId);
+			logger.info("{} Workouts fetched from database");
+			return workouts;
+		} catch(Exception e) {
+			logger.error("Error while fetching Workouts: ", e);
+			return workouts;
+		}		
+		
 	}
 
 }
