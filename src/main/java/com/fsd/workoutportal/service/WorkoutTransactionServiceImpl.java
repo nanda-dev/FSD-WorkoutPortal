@@ -1,6 +1,8 @@
 package com.fsd.workoutportal.service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -46,6 +48,30 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 			logger.info("Txn saved");
 		}		
 
+	}
+	
+	@Override
+	public List<WorkoutTransaction> getWorkoutTransactions(Long workoutId) {
+		logger.info("Fetching transaction list from DB...");
+		List<WorkoutTransaction> txns = wtxnDao.findByWorkoutId(workoutId);
+		if(txns != null) {
+			logger.info("{} transactions fetched from database", txns.size());
+		}
+		return txns;
+	}
+	
+	@Override
+	public List<WorkoutTransaction> getWorkoutTransactionReport(WorkoutTransaction txn) throws Exception {
+		if(txn != null) {
+			logger.info("Fetching transaction list from DB...");
+			logger.info("Start Time: {}", txn.getStartTime());
+			logger.info("End Time: {}", txn.getEndTime());
+			List<WorkoutTransaction> txns = wtxnDao.findByStartTimeBetween(txn.getStartTime(), txn.getEndTime());
+			logger.info("{} transactions fetched from database", (txns != null ? txns.size() : 0));
+			return txns;
+		} else {
+			throw new Exception("Invalid input");
+		}		
 	}
 	
 	private Double getCalsBurntByWorkoutForDuration(Long workoutId, Duration duration) {

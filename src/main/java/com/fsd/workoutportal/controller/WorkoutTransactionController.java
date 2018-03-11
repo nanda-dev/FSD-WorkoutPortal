@@ -1,9 +1,15 @@
 package com.fsd.workoutportal.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +39,33 @@ public class WorkoutTransactionController {
 		} catch (Exception e) {
 			logger.error("Error while adding Workout Transaction: ", e);
 			return new ApiResponse(Constants.API_STATUS_ERROR, e.getMessage());
-		}
-		
+		}		
+	}
+	
+	@GetMapping("/{workoutId}")
+	public ResponseEntity<Object> getWorkoutTransactions(@PathVariable Long workoutId){
+		logger.info("Get Workout Transactions for workout: {}", workoutId);
+		try {
+			List<WorkoutTransaction> txns = txnService.getWorkoutTransactions(workoutId);
+			logger.info("Returning Workout Transactions fetched from database");
+			return ResponseEntity.ok(txns);
+		} catch (Exception e) {
+			logger.error("Error while fetching Workout Transactions: ", e);
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
+	}
+	
+	@PostMapping("/report")
+	public ResponseEntity<Object> getTransactionsReport(@RequestBody WorkoutTransaction txn) {
+		logger.info("Get Transactions Report");
+		try {
+			List<WorkoutTransaction> txns = txnService.getWorkoutTransactionReport(txn);
+			logger.info("Returning Workout Transactions fetched from database for the given period");
+			return ResponseEntity.ok(txns);
+		} catch (Exception e) {
+			logger.error("Error while fetching Workout Transaction report: ", e);
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 
 }

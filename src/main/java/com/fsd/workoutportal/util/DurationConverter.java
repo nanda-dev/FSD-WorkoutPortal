@@ -1,6 +1,7 @@
 package com.fsd.workoutportal.util;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -11,12 +12,12 @@ public class DurationConverter
 
 	@Override
 	public Long convertToDatabaseColumn(Duration duration) {
-		return (duration == null ? null : duration.toMillis());
+		return (duration == null ? null : TimeUnit.MILLISECONDS.toSeconds(duration.toMillis()));
 	}
 
 	@Override
-	public Duration convertToEntityAttribute(Long durationInMillis) {
-		return (durationInMillis == null ? null : Duration.ofMillis(durationInMillis));
+	public Duration convertToEntityAttribute(Long durationInSeconds) {
+		return (durationInSeconds == null ? null : Duration.ofSeconds(durationInSeconds));
 	}	
 
 }
