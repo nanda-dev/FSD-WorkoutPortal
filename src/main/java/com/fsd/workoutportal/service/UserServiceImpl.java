@@ -17,7 +17,23 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User addUser(User user) {
+		logger.info("Sending User Object to DAO: {}", user.toString());
+		
 		return userDao.save(user);
+	}
+	
+	@Override
+	public User login(User user) {
+		if(user != null) {
+			logger.info("Fetching user with username: {}", user.getName());
+			User u = userDao.findByName(user.getName());
+			if(u.getPassword().equals(user.getPassword())) {
+				logger.info("Passwords match, login successful");
+				user.setId(u.getId());
+				return user;
+			}			
+		}
+		return null;
 	}
 
 	@Override

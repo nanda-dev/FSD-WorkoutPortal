@@ -3,6 +3,9 @@ package com.fsd.workoutportal.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +19,7 @@ import com.fsd.workoutportal.util.Constants;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin
 public class UserController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -23,8 +27,13 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping("/login")
-	public ApiResponse login(@RequestBody User user) {
-		return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
+	public ResponseEntity<Object> login(@RequestBody User user) {
+		logger.info("Login User");
+		User u = userService.login(user);
+		if(u == null)
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
+		else
+			return ResponseEntity.ok(u);
 	}
 	
 	@PostMapping
