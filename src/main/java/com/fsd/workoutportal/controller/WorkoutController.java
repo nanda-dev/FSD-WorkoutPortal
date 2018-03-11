@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.fsd.workoutportal.util.Constants;
 
 @RestController
 @RequestMapping("/api/workout")
+@CrossOrigin
 public class WorkoutController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -47,7 +49,7 @@ public class WorkoutController {
 		try {
 			
 			workouts = workoutService.getWorkoutsOfUser(userId);
-			logger.info("{} Workouts fetched from database");
+			logger.info("{} Workouts fetched from database", (workouts != null ? workouts.size() : 0));
 			return workouts;
 		} catch(Exception e) {
 			logger.error("Error while fetching Workouts: ", e);
