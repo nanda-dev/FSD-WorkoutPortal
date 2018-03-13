@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fsd.workoutportal.dao.UserDAO;
 import com.fsd.workoutportal.model.User;
@@ -16,6 +17,7 @@ public class UserServiceImpl implements UserService {
 	private UserDAO userDao;
 
 	@Override
+	@Transactional
 	public User addUser(User user) {
 		logger.info("Sending User Object to DAO: {}", user.toString());
 		
@@ -37,6 +39,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public void updatePassword(String password, Long userId) {
 		User user = userDao.findOne(userId);
 		if(user != null) {

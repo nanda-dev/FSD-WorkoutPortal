@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fsd.workoutportal.dao.WorkoutDAO;
 import com.fsd.workoutportal.dao.WorkoutTransactionDAO;
@@ -27,6 +28,7 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 	private WorkoutDAO workoutDao;
 
 	@Override
+	@Transactional
 	public void addWorkoutTransaction(WorkoutTransaction wTxn) {
 		if(wTxn != null && wTxn.getStartTime() != null && wTxn.getEndTime() != null) {	
 			logger.info("Calculate duration...");
