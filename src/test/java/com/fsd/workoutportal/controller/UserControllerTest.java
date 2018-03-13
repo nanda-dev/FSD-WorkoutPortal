@@ -45,7 +45,7 @@ public class UserControllerTest {
 				.contentType(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 		MockHttpServletResponse response = result.getResponse();
-		System.out.println(result.getResponse().getContentAsString());
+		//System.out.println(result.getResponse().getContentAsString());
 		String expected = "{status: SUCCESS, message: null}";
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
