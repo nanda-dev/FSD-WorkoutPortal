@@ -20,7 +20,7 @@ public class WorkoutPortalApplication {
 		SpringApplication.run(WorkoutPortalApplication.class, args);
 	}
 	
-	@Scheduled(fixedDelay = 10000)
+	@Scheduled(fixedDelay = 300000)
 	public void clearCache() {
 		logger.info("Evicting User and Workout Caches");
 		this.clearUserCache();
