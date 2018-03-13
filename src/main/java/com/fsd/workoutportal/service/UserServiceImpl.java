@@ -3,6 +3,7 @@ package com.fsd.workoutportal.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,11 +42,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void updatePassword(String password, Long userId) {
-		User user = userDao.findOne(userId);
+		User user = this.getUserById(userId);
 		if(user != null) {
 			user.setPassword(password);
 			userDao.save(user);
 		}
+	}
+	
+	@Cacheable("userCache")
+	private User getUserById(Long userId) {
+		return userDao.findOne(userId);
 	}
 
 }

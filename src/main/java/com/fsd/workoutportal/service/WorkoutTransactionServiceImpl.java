@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,7 +79,7 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 	
 	private Double getCalsBurntByWorkoutForDuration(Long workoutId, Duration duration) {
 		//Fetch Workout using workoutId
-		Workout workout = workoutDao.findOne(workoutId);
+		Workout workout = this.getWorkoutById(workoutId);
 		
 		if(workout != null) {
 			logger.info("Workout {} fetched from db.", workoutId);
@@ -117,6 +118,11 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 			logger.info("WorkoutUnit is SECONDS");
 			return (double) (TimeUnit.MILLISECONDS.toSeconds(duration.toMillis()));
 		}		
+	}
+	
+	@Cacheable("workoutCache")
+	private Workout getWorkoutById(Long workoutId) {
+		return workoutDao.findOne(workoutId);
 	}
 
 }
