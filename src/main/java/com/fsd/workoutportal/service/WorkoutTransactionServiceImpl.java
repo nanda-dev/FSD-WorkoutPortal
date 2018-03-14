@@ -1,13 +1,14 @@
 package com.fsd.workoutportal.service;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,9 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 
 	@Override
 	@Transactional
-	public void addWorkoutTransaction(WorkoutTransaction wTxn) {
+	@CachePut(value = "txnCache", key = "#result[0].workoutId", unless = "#result == null")
+	public List<WorkoutTransaction> addWorkoutTransaction(WorkoutTransaction wTxn) throws Exception {
+		WorkoutTransaction txn = null;
 		if(wTxn != null && wTxn.getStartTime() != null && wTxn.getEndTime() != null) {	
 			logger.info("Calculate duration...");
 			
@@ -47,17 +50,46 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 			wTxn.setCalsBurnt(calsBurnt);
 			wTxn.setDuration(duration);
 			
-			wtxnDao.save(wTxn);
+			txn = wtxnDao.save(wTxn);
 			logger.info("Txn saved");
+			if(txn != null) {
+				logger.info("Txn for workout {} will be added to cache.", txn.getWorkoutId());
+				List<WorkoutTransaction> cachedList = this.getWorkoutTransactions(txn.getWorkoutId());
+				
+				if(cachedList == null) {
+					logger.info("Cache is null/empty.");
+					//cachedList = new ArrayList<>();
+				}					
+				
+				logger.info("Txns in Cache for workout {} before addition: {}", 
+						txn.getWorkoutId(), 
+						(cachedList != null ? cachedList.size() : 0));
+				
+				//Saved txn is getting added to Cache.
+				//Hence adding it here, will give a duplicate entry in response.
+				//cachedList.add(txn);
+				
+				logger.info("Txns in Cache for workout {} after addition: {}", 
+						txn.getWorkoutId(), 
+						(cachedList != null ? cachedList.size() : 0));
+				
+				return cachedList;
+				
+			}
 		}		
+		
+		throw new Exception("Invalid input for adding Workout Transaction.");			
 
 	}
 	
 	@Override
+	@Cacheable(value = "txnCache", key = "#workoutId", unless = "#result == null")
 	public List<WorkoutTransaction> getWorkoutTransactions(Long workoutId) {
 		logger.info("Fetching transaction list from DB...");
 		List<WorkoutTransaction> txns = wtxnDao.findByWorkoutId(workoutId);
 		if(txns != null) {
+			//If there are no records fetched, dao is returning a non-null, 0 sized list.
+			//Could be the reason why the cache is always having a value.
 			logger.info("{} transactions fetched from database", txns.size());
 		}
 		return txns;
@@ -120,8 +152,9 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 		}		
 	}
 	
-	@Cacheable("workoutCache")
+	@Cacheable(value = "workoutCache", key = "#workoutId")
 	private Workout getWorkoutById(Long workoutId) {
+		logger.info("Fetching workout {} from db. Will be cached.", workoutId);
 		return workoutDao.findOne(workoutId);
 	}
 

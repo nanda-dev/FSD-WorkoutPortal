@@ -6,7 +6,7 @@ import com.fsd.workoutportal.model.Workout;
 
 public interface WorkoutService {
 	
-	public void addWorkout(Workout workout);
+	public List<Workout> addWorkout(Workout workout) throws Exception;
 	
 	public List<Workout> getWorkoutsOfUser(Long userId);
 

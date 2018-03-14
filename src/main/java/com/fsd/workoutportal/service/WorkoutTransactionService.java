@@ -6,7 +6,7 @@ import com.fsd.workoutportal.model.WorkoutTransaction;
 
 public interface WorkoutTransactionService {
 	
-	public void addWorkoutTransaction(WorkoutTransaction wTxn);	
+	public List<WorkoutTransaction> addWorkoutTransaction(WorkoutTransaction wTxn) throws Exception;	
 	public List<WorkoutTransaction> getWorkoutTransactions(Long workoutId);
 	public List<WorkoutTransaction> getWorkoutTransactionReport(WorkoutTransaction txn) throws Exception;
 

@@ -49,7 +49,7 @@ public class WorkoutController {
 		try {
 			
 			workouts = workoutService.getWorkoutsOfUser(userId);
-			logger.info("{} Workouts fetched from database", (workouts != null ? workouts.size() : 0));
+			logger.info("Returning {} Workouts to App.", (workouts != null ? workouts.size() : 0));
 			return workouts;
 		} catch(Exception e) {
 			logger.error("Error while fetching Workouts: ", e);

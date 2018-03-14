@@ -47,7 +47,8 @@ public class WorkoutTransactionController {
 		logger.info("Get Workout Transactions for workout: {}", workoutId);
 		try {
 			List<WorkoutTransaction> txns = txnService.getWorkoutTransactions(workoutId);
-			logger.info("Returning Workout Transactions fetched from database");
+			logger.info("Returning {} Workout Transactions to App.", 
+					(txns != null ? txns.size() : 0));
 			return ResponseEntity.ok(txns);
 		} catch (Exception e) {
 			logger.error("Error while fetching Workout Transactions: ", e);
