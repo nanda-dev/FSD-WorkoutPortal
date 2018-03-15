@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fsd.workoutportal.dto.ApiResponse;
@@ -56,11 +57,12 @@ public class WorkoutTransactionController {
 		}		
 	}
 	
-	@PostMapping("/report")
-	public ResponseEntity<Object> getTransactionsReport(@RequestBody WorkoutTransaction txn) {
+	@PostMapping("/report/{userId}")
+	//@RequestMapping(value = "/{userId}", method = RequestMethod.POST)
+	public ResponseEntity<Object> getTransactionsReport(@PathVariable Long userId, @RequestBody WorkoutTransaction txn) {
 		logger.info("Get Transactions Report");
 		try {
-			List<WorkoutTransaction> txns = txnService.getWorkoutTransactionReport(txn);
+			List<WorkoutTransaction> txns = txnService.getWorkoutTransactionReport(userId, txn);
 			logger.info("Returning Workout Transactions fetched from database for the given period");
 			return ResponseEntity.ok(txns);
 		} catch (Exception e) {

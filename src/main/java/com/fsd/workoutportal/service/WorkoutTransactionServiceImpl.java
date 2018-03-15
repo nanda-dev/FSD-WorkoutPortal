@@ -96,12 +96,15 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 	}
 	
 	@Override
-	public List<WorkoutTransaction> getWorkoutTransactionReport(WorkoutTransaction txn) throws Exception {
+	public List<WorkoutTransaction> getWorkoutTransactionReport(Long userId, WorkoutTransaction txn) throws Exception {
 		if(txn != null) {
 			logger.info("Fetching transaction list from DB...");
 			logger.info("Start Time: {}", txn.getStartTime());
 			logger.info("End Time: {}", txn.getEndTime());
-			List<WorkoutTransaction> txns = wtxnDao.findByStartTimeBetween(txn.getStartTime(), txn.getEndTime());
+			logger.info("Get User {}'s workoutIds", userId);
+			List<Long> workoutIds = workoutDao.findWorkoutIdByUserId(userId);
+			logger.info("Workouts of user {}: {}", userId, workoutIds);
+			List<WorkoutTransaction> txns = wtxnDao.findByStartTimeBetweenAndWorkoutIdIn(txn.getStartTime(), txn.getEndTime(), workoutIds);
 			logger.info("{} transactions fetched from database", (txns != null ? txns.size() : 0));
 			return txns;
 		} else {

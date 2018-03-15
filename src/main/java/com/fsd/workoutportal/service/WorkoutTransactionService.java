@@ -8,6 +8,6 @@ public interface WorkoutTransactionService {
 	
 	public List<WorkoutTransaction> addWorkoutTransaction(WorkoutTransaction wTxn) throws Exception;	
 	public List<WorkoutTransaction> getWorkoutTransactions(Long workoutId);
-	public List<WorkoutTransaction> getWorkoutTransactionReport(WorkoutTransaction txn) throws Exception;
+	public List<WorkoutTransaction> getWorkoutTransactionReport(Long userId, WorkoutTransaction txn) throws Exception;
 
 }
