@@ -30,15 +30,15 @@ public class WorkoutTransactionController {
 	private WorkoutTransactionService txnService;
 	
 	@PostMapping
-	public ApiResponse addNewTransaction(@RequestBody WorkoutTransaction wTxn) {
+	public ResponseEntity<ApiResponse> addNewTransaction(@RequestBody WorkoutTransaction wTxn) {
 		logger.info("Add Workout Transaction");
 		try {
 			txnService.addWorkoutTransaction(wTxn);
 			logger.info("Workout Transaction added to database");
-			return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
+			return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(Constants.API_STATUS_SUCCESS, null));
 		} catch (Exception e) {
 			logger.error("Error while adding Workout Transaction: {}", e);
-			return new ApiResponse(Constants.API_STATUS_ERROR, e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(Constants.API_STATUS_ERROR, e.getMessage()));
 		}		
 	}
 	
