@@ -37,7 +37,7 @@ public class WorkoutTransactionController {
 			logger.info("Workout Transaction added to database");
 			return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
 		} catch (Exception e) {
-			logger.error("Error while adding Workout Transaction: ", e);
+			logger.error("Error while adding Workout Transaction: {}", e);
 			return new ApiResponse(Constants.API_STATUS_ERROR, e.getMessage());
 		}		
 	}
@@ -51,7 +51,7 @@ public class WorkoutTransactionController {
 					(txns != null ? txns.size() : 0));
 			return ResponseEntity.ok(txns);
 		} catch (Exception e) {
-			logger.error("Error while fetching Workout Transactions: ", e);
+			logger.error("Error while fetching Workout Transactions: {}", e);
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
 	}
@@ -64,7 +64,7 @@ public class WorkoutTransactionController {
 			logger.info("Returning Workout Transactions fetched from database for the given period");
 			return ResponseEntity.ok(txns);
 		} catch (Exception e) {
-			logger.error("Error while fetching Workout Transaction report: ", e);
+			logger.error("Error while fetching Workout Transaction report: {}", e);
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
 	}

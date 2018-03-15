@@ -43,9 +43,9 @@ public class WorkoutControllerTest {
 		w1.setUnit(UnitTime.HOURS);
 		w1.setUserId(2L);
 		Workout w2 = new Workout();
-		w2.setId(1L);
-		w2.setTitle("W1");
-		w2.setCalsBurnt(10d);
+		w2.setId(2L);
+		w2.setTitle("W2");
+		w2.setCalsBurnt(20d);
 		w2.setUnit(UnitTime.HOURS);
 		w2.setUserId(2L);
 		
