@@ -1,4 +1,4 @@
-package com.fsd.workoutportal.controller;
+package com.fsd.workoutportal.service;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -25,10 +25,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fsd.workoutportal.controller.WorkoutController;
 import com.fsd.workoutportal.model.Workout;
 
-//@RunWith(SpringRunner.class)
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(value = WorkoutController.class, secure = false)
 public class WorkoutsCacheTest {
 
@@ -65,7 +66,7 @@ public class WorkoutsCacheTest {
 
 	@Test
 	public void getWorkoutsFromCacheTest() throws Exception {
-		log.info("Test #2 Running...");
+		log.info("Start: getWorkoutsFromCacheTest");
 		List<Workout> firstList = new ArrayList<>();
 		List<Workout> secondList = new ArrayList<>();
 
@@ -89,7 +90,7 @@ public class WorkoutsCacheTest {
 		result = workoutService.getWorkoutsOfUser(3L);
 		assertThat(result, is(secondList));
 
-		log.info("Test #2 Passed.");
+		log.info("Exit: getWorkoutsFromCacheTest");
 	}
 	
 	@After
