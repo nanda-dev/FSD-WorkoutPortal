@@ -43,7 +43,6 @@ public class UserController {
 		try {
 			userService.addUser(user);
 			logger.info("User added to database.");
-			//return ResponseEntity.created(null).body(new ApiResponse(Constants.API_STATUS_SUCCESS, null));
 			return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
 		} catch(Exception e) {
 			logger.error("Error while adding User to database: {}", e);
