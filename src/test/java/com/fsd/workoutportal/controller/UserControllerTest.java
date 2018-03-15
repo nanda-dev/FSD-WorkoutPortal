@@ -41,7 +41,7 @@ public class UserControllerTest {
 		mockUser.setName("testuser");
 		mockUser.setPassword("pass");
 		
-		Mockito.when(userService.login(Mockito.any(User.class))).thenReturn(mockUser);
+		Mockito.when(userService.addUser(Mockito.any(User.class))).thenReturn(mockUser);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/api/user")
@@ -65,7 +65,7 @@ public class UserControllerTest {
 		mockUser.setName("testuser");
 		mockUser.setPassword("pass");
 		
-		Mockito.when(userService.addUser(Mockito.any(User.class))).thenReturn(mockUser);
+		Mockito.when(userService.login(Mockito.any(User.class))).thenReturn(mockUser);
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders
 				.post("/api/user/login")
