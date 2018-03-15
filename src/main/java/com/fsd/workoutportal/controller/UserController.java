@@ -31,6 +31,7 @@ public class UserController {
 		logger.info("Login User");
 		User u = userService.login(user);
 		if(u == null)
+			//ResponseEntity.status(HttpStatus.CREATED).body(u);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		else
 			return ResponseEntity.ok(u);
@@ -45,7 +46,7 @@ public class UserController {
 			//return ResponseEntity.created(null).body(new ApiResponse(Constants.API_STATUS_SUCCESS, null));
 			return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
 		} catch(Exception e) {
-			logger.error("Error while adding User to database:", e);
+			logger.error("Error while adding User to database: {}", e);
 			return new ApiResponse(Constants.API_STATUS_ERROR, e.getMessage());
 			//return ResponseEntity.badRequest().body(new ApiResponse(Constants.API_STATUS_ERROR, e.getMessage()));
 		}
