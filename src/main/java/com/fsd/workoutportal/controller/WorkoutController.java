@@ -30,13 +30,13 @@ public class WorkoutController {
 	
 	@PostMapping
 	public ApiResponse addWorkout(@RequestBody Workout workout) {
-		logger.info("Add Workout");
+		logger.info("Add Workout.");
 		try {
 			workoutService.addWorkout(workout);
 			logger.info("Workout added to database");
 			return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
 		} catch(Exception e) {
-			logger.error("Error while adding Workout: ", e);
+			logger.error("Error while adding Workout: {}", e);
 			return new ApiResponse(Constants.API_STATUS_ERROR, e.getMessage());
 		}
 		
@@ -46,13 +46,12 @@ public class WorkoutController {
 	public List<Workout> getWorkoutsOfUser(@PathVariable Long userId) {
 		logger.info("Get Workouts of User: {}", userId);
 		List<Workout> workouts = new ArrayList<>();
-		try {
-			
+		try {			
 			workouts = workoutService.getWorkoutsOfUser(userId);
 			logger.info("Returning {} Workouts to App.", (workouts != null ? workouts.size() : 0));
 			return workouts;
 		} catch(Exception e) {
-			logger.error("Error while fetching Workouts: ", e);
+			logger.error("Error while fetching Workouts: {}", e);
 			return workouts;
 		}		
 		

@@ -1,17 +1,17 @@
 package com.fsd.workoutportal.controller;
 
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,14 +28,17 @@ import com.fsd.workoutportal.util.UnitTime;
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = WorkoutController.class, secure = false)
 public class WorkoutControllerTest {
+	Logger log = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc mockMvc;	
 	
 	@MockBean
 	private WorkoutService workoutService;
 	
 	@Test
 	public void getWorkoutsOfUserTest() throws Exception {
+		log.info("Test #1 Running...");
 		Workout w1 = new Workout();
 		w1.setId(1L);
 		w1.setTitle("W1");
@@ -57,7 +60,7 @@ public class WorkoutControllerTest {
 									.accept(MediaType.APPLICATION_JSON))
 			   .andExpect(jsonPath("$", hasSize(greaterThan(0)))).andDo(print());
 		//System.out.println(result.getResponse().getContentAsString());
-		
-	}
+		log.info("Test #1 Passed.");		
+	}	
 
 }
