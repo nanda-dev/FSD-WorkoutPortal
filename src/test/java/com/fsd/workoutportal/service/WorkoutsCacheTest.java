@@ -27,6 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fsd.workoutportal.WorkoutPortalApplication;
 import com.fsd.workoutportal.controller.WorkoutController;
 import com.fsd.workoutportal.model.Workout;
 
@@ -66,7 +67,7 @@ public class WorkoutsCacheTest {
 		//log.info("Verifying the Cacheable method call count is 1.");
 		//Mockito.verify(workoutService, Mockito.times(1)).getWorkoutsOfUser(2L);
 
-		log.info("Asserting the second fetch for a different query.");
+		log.info("Asserting the fetch for a different query.");
 		result = workoutService.getWorkoutsOfUser(3L);
 		assertThat(result, is(secondList));
 
