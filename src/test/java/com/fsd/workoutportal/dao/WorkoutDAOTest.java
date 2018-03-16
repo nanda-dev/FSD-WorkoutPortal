@@ -1,15 +1,11 @@
 package com.fsd.workoutportal.dao;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -26,6 +22,7 @@ import com.fsd.workoutportal.util.UnitTime;
 @DataJpaTest
 public class WorkoutDAOTest {
 	Logger log = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private TestEntityManager em;
 	
