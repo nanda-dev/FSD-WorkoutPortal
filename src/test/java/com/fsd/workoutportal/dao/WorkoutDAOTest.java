@@ -30,8 +30,8 @@ public class WorkoutDAOTest {
 	private WorkoutDAO dao;
 	
 	@Test
-	public void saveWorkoutTest() {
-		log.info("Start: saveWorkoutTest");
+	public void saveAndFindWorkoutByUserIdTest() {
+		log.info("Start: saveAndFindWorkoutByUserIdTest");
 		
 		Workout w = new Workout();
 		w.setTitle("W1");
@@ -47,7 +47,28 @@ public class WorkoutDAOTest {
 		assertNotNull(workouts);
 		assertThat(workouts.size(), is(1));		
 		
-		log.info("Exit: saveWorkoutTest");
+		log.info("Exit: saveAndFindWorkoutByUserIdTest");
+		
+	}
+	
+	@Test
+	public void findWorkoutIdByUserIdTest() throws Exception {
+		log.info("Start: findWorkoutIdByUserIdTest");
+		
+		Workout w = new Workout();
+		w.setTitle("W1");
+		w.setUserId(1L);
+		w.setCalsBurnt(10d);
+		w.setUnit(UnitTime.HOURS);
+		
+		em.persistAndFlush(w);
+		
+		List<Long> workoutIds = dao.findWorkoutIdByUserId(1L);
+		
+		assertNotNull(workoutIds);
+		assertThat(workoutIds.size(), is(1));
+		
+		log.info("Exit: findWorkoutIdByUserIdTest");
 		
 	}
 	
