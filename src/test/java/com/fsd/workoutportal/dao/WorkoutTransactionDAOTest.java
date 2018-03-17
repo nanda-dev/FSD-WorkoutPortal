@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThat;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -54,6 +56,37 @@ public class WorkoutTransactionDAOTest {
 		assertThat(txns.size(), is(1));		
 		
 		log.info("Exit: saveAndFindByWorkoutIdTest");
+		
+	}
+	
+	@Test
+	public void findByStartTimeBetweenAndWorkoutIdInTest() {
+		log.info("Start: findByStartTimeBetweenAndWorkoutIdInTest");
+		Long workoutId = 1L;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		
+		WorkoutTransaction wt = new WorkoutTransaction();
+		wt.setWorkoutId(workoutId);
+		
+		LocalDateTime start = LocalDateTime.parse("2018-03-10 10:00:00", formatter);
+		LocalDateTime end = LocalDateTime.parse("2018-03-10 11:00:00", formatter);
+		
+		wt.setStartTime(start);
+		wt.setEndTime(end);
+		wt.setDuration(Duration.between(start, end));
+		wt.setCalsBurnt(10d);
+		
+		em.persistAndFlush(wt);
+		
+		List<WorkoutTransaction> txns = dao.findByStartTimeBetweenAndWorkoutIdIn(
+				LocalDateTime.parse("2018-03-01 00:00:00", formatter), 
+				LocalDateTime.parse("2018-03-15 23:59:59", formatter),
+				Arrays.asList(workoutId));
+		
+		assertNotNull(txns);
+		assertThat(txns.size(), is(1));		
+		
+		log.info("Exit: findByStartTimeBetweenAndWorkoutIdInTest");
 		
 	}
 	
