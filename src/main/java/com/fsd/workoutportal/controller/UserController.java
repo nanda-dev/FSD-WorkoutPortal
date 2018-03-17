@@ -31,7 +31,6 @@ public class UserController {
 		logger.info("Login User");
 		User u = userService.login(user);
 		if(u == null)
-			//ResponseEntity.status(HttpStatus.CREATED).body(u);
 			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		else
 			return ResponseEntity.ok(u);
@@ -43,6 +42,9 @@ public class UserController {
 		try {
 			userService.addUser(user);
 			logger.info("User added to database.");
+			
+			//ResponseEntity.status(HttpStatus.CREATED).body(u);
+			
 			return new ApiResponse(Constants.API_STATUS_SUCCESS, null);
 		} catch(Exception e) {
 			logger.error("Error while adding User to database: {}", e);
