@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.validateMockitoUsage;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,52 +22,41 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fsd.workoutportal.dao.WorkoutDAO;
-import com.fsd.workoutportal.model.Workout;
+import com.fsd.workoutportal.dao.WorkoutTransactionDAO;
+import com.fsd.workoutportal.model.WorkoutTransaction;
 
 @RunWith(SpringRunner.class)
-public class WorkoutServiceTest {
+public class WorkoutTransactionServiceTest {
 	Logger log = LoggerFactory.getLogger(getClass());
 	
 	@MockBean
-	private WorkoutDAO workoutDaoMock;
+	private WorkoutDAO wkDao;
+	
+	@MockBean
+	private WorkoutTransactionDAO txnDao;
 	
 	@Autowired
-	private WorkoutService workoutService;
+	private WorkoutTransactionService txnService;
 		
 	@TestConfiguration
 	static class Config{
 		
 		@Bean
-		public WorkoutService getSvc() {
-			return new WorkoutServiceImpl();
+		public WorkoutTransactionService getSvc() {
+			return new WorkoutTransactionServiceImpl();
 		}
 		
 	}
 	
-	/*@Before
-	public void setup() {
-		workoutDao = Mockito.mock(WorkoutDAO.class);
-		
-	}*/
-	
 	@Test(expected = Exception.class)
-	public void saveBlankWorkoutTest() throws Exception {
-		log.info("Start: saveBlankWorkoutTest");
+	public void saveBlankWorkoutTransactionTest() throws Exception {
+		log.info("Start: saveBlankWorkoutTransactionTest");
 		
-		List<Workout> workouts = workoutService.addWorkout(new Workout());
+		List<WorkoutTransaction> txns = txnService.addWorkoutTransaction(new WorkoutTransaction());
 		
-		log.info("Exit: saveBlankWorkoutTest");
-	}
+		log.info("Exit: saveBlankWorkoutTransactionTest");
+	}	
 	
-	@Test
-	public void getWorkoutsTest() throws Exception {
-		log.info("Start: getWorkoutsTest");
-		Workout w = new Workout();
-		Mockito.when(workoutDaoMock.findByUserId(Mockito.anyLong())).thenReturn(Arrays.asList(w));
-		List<Workout> workouts = workoutService.getWorkoutsOfUser(2L);
-		assertThat(workouts, hasSize(greaterThan(0)));
-		log.info("Exit: getWorkoutsTest");
-	}
 	
 	@After
 	public void validate() {

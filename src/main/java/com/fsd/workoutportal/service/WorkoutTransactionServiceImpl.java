@@ -29,6 +29,18 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 	@Autowired
 	private WorkoutDAO workoutDao;
 
+	/*
+	 * The Cache: "txnCache" is used to cache a list of WorkoutTransactions fetched for a particular WorkoutId.
+	 * This Cache will be updated when a new WorkoutTransaction is added to database.
+	 * Since we cannot add a single object to the list of objects in Cache,
+	 * this method will in-turn call a Cacheable method that will return the actual list to be cached,
+	 * resulting in updating the "txnCache" for a WorkoutId.
+	 * 
+	 * Further calls to get the list of WorkoutTransactions for that WorkoutId
+	 * will make use of the updated cache.
+	 * 
+	 * @see com.fsd.workoutportal.service.WorkoutTransactionService#addWorkoutTransaction(com.fsd.workoutportal.model.WorkoutTransaction)
+	 */
 	@Override
 	@Transactional
 	@CachePut(value = "txnCache", key = "#result[0].workoutId", unless = "#result == null")
@@ -66,7 +78,7 @@ public class WorkoutTransactionServiceImpl implements WorkoutTransactionService 
 						(cachedList != null ? cachedList.size() : 0));
 				
 				//Saved txn is getting added to Cache.
-				//Hence adding it here, will give a duplicate entry in response.
+				//Hence adding it here will result in a duplicate entry in response.
 				//cachedList.add(txn);
 				
 				logger.info("Txns in Cache for workout {} after addition: {}", 
